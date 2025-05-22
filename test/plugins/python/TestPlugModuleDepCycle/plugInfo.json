@@ -1,0 +1,18 @@
+{
+    "Plugins": [
+        {
+            "Type": "python",
+            "Name": "TestPlugModuleDepCycle",
+            "Info": {
+                "PluginDependencies": {
+                    "TestPlugBase<3>": ["TestPlugPythonDepCycle"]
+                },
+                "Types": {
+                    "TestPlugPythonDepCycle": {
+                        "bases": ["TestPlugBase<3>"]
+                    }
+                }
+            }
+        }
+    ]
+}
