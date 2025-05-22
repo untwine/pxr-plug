@@ -1,0 +1,16 @@
+{
+    "Plugins": [
+        {
+            "Type": "library",
+            "Name": "TestPlugDso1",
+            "LibraryPath": "$<TARGET_FILE:TestPlugDso1>",
+            "Info": {
+                "Types": {
+                    "pxr::TestPlugDerived1": {
+                        "bases": ["pxr::_TestPlugBase<1>"]
+                    }
+                }
+            }
+        }
+    ]
+}

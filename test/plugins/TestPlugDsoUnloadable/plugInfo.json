@@ -1,0 +1,23 @@
+{
+    "Plugins": [
+        {
+            "Type": "library",
+            "Name": "TestPlugDsoUnloadable",
+            "LibraryPath": "$<TARGET_FILE:TestPlugDsoUnloadable>",
+            "Info": {
+                "Types": {
+                    "pxr::TestPlugUnloadable": {
+                        "bases": ["pxr::_TestPlugBase<1>"],
+                        "description": "unloadable plugin",
+                        "notLoadable": true,
+                        "vectorString": ["f", "l", "o"],
+                        "vectorInt": [1, 2, 3],
+                        "vectorDouble": [1.1, 2.2, 3.3],
+                        "Int": 4711,
+                        "Double": 0.815
+                    }
+                }
+            }
+        }
+    ]
+}

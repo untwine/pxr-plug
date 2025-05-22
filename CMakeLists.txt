@@ -1,182 +1,109 @@
-set(PXR_PREFIX pxr/base)
-set(PXR_PACKAGE plug)
+cmake_minimum_required(VERSION 3.21...3.31)
 
-pxr_library(plug
-    LIBRARIES
-        arch
-        tf
-        js
-        trace
-        work
-        ${TBB_tbb_LIBRARY}
+# Default build type value.
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type")
 
-    INCLUDE_DIRS
-        ${TBB_INCLUDE_DIRS}
-
-    PUBLIC_CLASSES
-        interfaceFactory
-        notice
-        plugin
-        registry
-        staticInterface
-
-    PRIVATE_CLASSES
-        debugCodes
-        info
-        testPlugBase
-
-    PUBLIC_HEADERS
-        api.h
-        thisPlugin.h
-
-    CPPFILES
-        initConfig.cpp
-
-    PYMODULE_CPPFILES
-        module.cpp
-        wrapNotice.cpp
-        wrapPlugin.cpp
-        wrapRegistry.cpp
-        wrapTestPlugBase.cpp
-
-    PYMODULE_FILES
-        __init__.py
-
-    DOXYGEN_FILES
-        overview.dox
+project(pxr-plug
+    VERSION 0.25.5
+    HOMEPAGE_URL "https://github.com/untwine/pxr-plug"
+    LANGUAGES C CXX
 )
 
-pxr_test_scripts(
-    testPlug.py
-)
+if (NOT "${CMAKE_CXX_STANDARD}")
+    set(CMAKE_CXX_STANDARD 17 CACHE STRING "Default C++ standard")
+endif()
 
-pxr_build_test_shared_lib(TestPlugDso1
-    INSTALL_PREFIX PlugPlugins
-    LIBRARIES
-        tf
-    CPPFILES
-        testenv/TestPlugDso1.cpp
-) 
-pxr_build_test_shared_lib(TestPlugDso2
-    INSTALL_PREFIX PlugPlugins
-    LIBRARIES
-        tf
-    CPPFILES
-        testenv/TestPlugDso2.cpp
-) 
-pxr_build_test_shared_lib(TestPlugDso3
-    INSTALL_PREFIX PlugPlugins
-    LIBRARIES
-        tf
-    CPPFILES
-        testenv/TestPlugDso3.cpp
-) 
-pxr_build_test_shared_lib(TestPlugDsoEmpty
-    INSTALL_PREFIX PlugPlugins
-    LIBRARIES
-        tf
-    CPPFILES
-        testenv/TestPlugDsoEmpty.cpp
-) 
-pxr_build_test_shared_lib(TestPlugDsoIncomplete
-    INSTALL_PREFIX PlugPlugins
-    LIBRARIES
-        tf
-    CPPFILES
-        testenv/TestPlugDsoIncomplete.cpp
-) 
-pxr_build_test_shared_lib(TestPlugDsoUnloadable
-    INSTALL_PREFIX PlugPlugins
-    LIBRARIES
-        tf
-    CPPFILES
-        testenv/TestPlugDsoUnloadable.cpp
-) 
-# This library helps test behavior when a plugin is unloadable,
-# but some linkers by default will error out when building this due
-# to the references to undefined symbols. So we need to specify a
-# link flag to force these symbols to be looked up at runtime.
-if (TARGET TestPlugDsoUnloadable)
-    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-        set_target_properties(TestPlugDsoUnloadable
-            PROPERTIES
-            LINK_FLAGS "-undefined dynamic_lookup"
-        )
-    elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-        # This forces the link to complete but the linker will still
-        # report the missing symbol as an error and will also emit a
-        # warning that the link was forced.  This is unfortunate as
-        # it causes confusion.  There doesn't appear to be any way to
-        # suppress either the warning or the error, though.  Rest
-        # assured that the unresolved external symbol error is okay
-        # for this target.
-        set_target_properties(TestPlugDsoUnloadable
-            PROPERTIES
-            LINK_FLAGS "/FORCE:UNRESOLVED"
-        )
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Default options.
+option(BUILD_TESTS "Build tests" ON)
+option(BUILD_SHARED_LIBS "Build Shared Library" ON)
+option(BUILD_PYTHON_BINDINGS "Build Python Bindings" ON)
+option(ENABLE_PRECOMPILED_HEADERS "Enable precompiled headers." OFF)
+
+if (NOT BUILD_SHARED_LIBS)
+    add_compile_definitions(PXR_STATIC)
+endif()
+
+include(GNUInstallDirs)
+
+if (WIN32)
+    # Prevent WinDef.h from defining min/max macros.
+    add_definitions(-DNOMINMAX)
+
+    # Exclude unnecessary Windows APIs for faster builds and fewer macro conflicts.
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
+
+    # Disable /Zc:inline in VS 2019+ to retain "arch_ctor_<name>" symbols in release.
+    # https://developercommunity.visualstudio.com/t/914943
+    if (MSVC_VERSION GREATER_EQUAL 1920)
+        set(CMAKE_CXX_FLAGS "/Zc:inline- ${CMAKE_CXX_FLAGS}")
+    else()
+        set(CMAKE_CXX_FLAGS "/Zc:inline ${CMAKE_CXX_FLAGS}")
     endif()
+
+    # Disable harmless Visual Studio warning C4003 (non-standard preprocessor).
+    # https://developercommunity.visualstudio.com/t/364698
+    set(CMAKE_CXX_FLAGS "/wd4003 ${CMAKE_CXX_FLAGS}")
 endif()
 
-pxr_create_test_module(TestPlugModule1
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModule2
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModule3
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleEmpty
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleLoaded
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleLoadedBadBase
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleUnloadable
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleUnloadable2
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleDepBadBase
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleDepBadDep
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleDepBadDep2
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleDepBadLoad
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleDepCycle
-    INSTALL_PREFIX PlugPlugins
-)
-pxr_create_test_module(TestPlugModuleIncomplete
-    INSTALL_PREFIX PlugPlugins
-)
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    # Create a test module that has a unicode character in it's path
-    # for Windows
-    pxr_create_test_module(TestPlugModuleUnicode
-        INSTALL_PREFIX PlugPlugins
-        DEST_DIR TestPlugMödüleÜnicöde
-    )
-else()
-    # Create a test module without a unicode character in the path
-    # to make this test consistent on other OSes
-    pxr_create_test_module(TestPlugModuleUnicode
-        INSTALL_PREFIX PlugPlugins
-    )
+# Update build type from environment for CMake < 3.22
+if (DEFINED ENV{CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE $ENV{CMAKE_BUILD_TYPE}
+        CACHE STRING "Specifies the build type" FORCE)
 endif()
 
-pxr_register_test(testPlug
-    PYTHON
-    COMMAND "${CMAKE_INSTALL_PREFIX}/tests/testPlug"
+find_package(pxr-arch 0.25.5 REQUIRED)
+find_package(pxr-tf 0.25.5 REQUIRED)
+find_package(pxr-js 0.25.5 REQUIRED)
+find_package(pxr-trace 0.25.5 REQUIRED)
+find_package(pxr-work 0.25.5 REQUIRED)
+find_package(TBB 2017.0 REQUIRED)
+
+if(BUILD_PYTHON_BINDINGS)
+    add_compile_definitions(PXR_PYTHON_SUPPORT_ENABLED=1)
+    find_package(pxr-boost 0.25.5 REQUIRED)
+
+    if (NOT CMAKE_INSTALL_PYTHON_LIBDIR)
+        set(py_version "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
+        set(CMAKE_INSTALL_PYTHON_LIBDIR
+            "${CMAKE_INSTALL_LIBDIR}/python${py_version}/site-packages"
+            CACHE INTERNAL "Installation Python library path.")
+    endif ()
+endif()
+
+add_subdirectory(src)
+
+# Build and setup tests if required.
+if (BUILD_TESTS)
+    # Python is needed to run the tests.
+    find_package(Python COMPONENTS Interpreter Development REQUIRED)
+    find_package(Pytest)
+
+    # Pxr-Gf is used within the tests
+    find_package(pxr-gf 0.25.5 REQUIRED)
+
+    enable_testing()
+    add_subdirectory(test)
+endif()
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    "cmake/pxr-plug-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/pxr-plug-config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/cmake/pxr-plug
 )
 
+write_basic_package_version_file(
+    "pxr-plug-config-version.cmake"
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/pxr-plug-config.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/pxr-plug-config-version.cmake"
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/cmake/pxr-plug
+)

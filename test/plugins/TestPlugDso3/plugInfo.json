@@ -1,0 +1,22 @@
+{
+    "Plugins": [
+        {
+            "Type": "library",
+            "Name": "TestPlugDso3",
+            "LibraryPath": "$<TARGET_FILE:TestPlugDso3>",
+            "Info": {
+                "PluginDependencies": {
+                    "pxr::_TestPlugBase<3>": ["TestPlugModule3.TestPlugPythonDerived3_3"]
+                },
+                "Types": {
+                    "pxr::TestPlugDerived3_3": {
+                        "bases": ["pxr::_TestPlugBase<3>"]
+                    },
+                    "pxr::TestPlugDerived3_4": {
+                        "bases": ["pxr::_TestPlugBase<4>"]
+                    }
+                }
+            }
+        }
+    ]
+}

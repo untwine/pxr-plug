@@ -1,0 +1,6 @@
+add_subdirectory(TestPlugDso1)
+add_subdirectory(TestPlugDso2)
+add_subdirectory(TestPlugDso3)
+add_subdirectory(TestPlugDsoEmpty)
+add_subdirectory(TestPlugDsoIncomplete)
+add_subdirectory(TestPlugDsoUnloadable)
