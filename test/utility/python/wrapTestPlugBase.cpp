@@ -5,7 +5,7 @@
 //
 // Modified by Jeremy Retailleau.
 
-#include <pxr/plug/testPlugBase.h>
+#include <plugTest/testPlugBase.h>
 #include <pxr/boost/python/def.hpp>
 #include <pxr/boost/python/args.hpp>
 #include <pxr/tf/makePyConstructor.h>
@@ -21,7 +21,7 @@ using namespace pxr::boost::python;
 namespace {
 
 template <class T>
-void wrap_TestPlugBase(const std::string & name)
+void wrapTestPlugBase(const std::string & name)
 {
     typedef T This;
     typedef TfWeakPtr<T> ThisPtr;
@@ -42,10 +42,10 @@ void wrap_TestPlugBase(const std::string & name)
 
 } // anonymous namespace 
 
-void wrap_TestPlugBase()
+void wrapTestPlugBase()
 {
-    wrap_TestPlugBase<_TestPlugBase1>("_TestPlugBase1");
-    wrap_TestPlugBase<_TestPlugBase2>("_TestPlugBase2");
-    wrap_TestPlugBase<_TestPlugBase3>("_TestPlugBase3");
-    wrap_TestPlugBase<_TestPlugBase4>("_TestPlugBase4");
+    wrapTestPlugBase<TestPlugBase1>("TestPlugBase1");
+    wrapTestPlugBase<TestPlugBase2>("TestPlugBase2");
+    wrapTestPlugBase<TestPlugBase3>("TestPlugBase3");
+    wrapTestPlugBase<TestPlugBase4>("TestPlugBase4");
 }

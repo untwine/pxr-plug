@@ -6,9 +6,10 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug
+from plug_test import TestPlugBase3
 
 # This plugin is coded correctly, but will have an empty plugInfo.json
-class TestPlugPythonEmpty(Plug._TestPlugBase3):
+class TestPlugPythonEmpty(TestPlugBase3):
     def GetTypeName(self):
         return 'TestPlugPythonEmpty'
 

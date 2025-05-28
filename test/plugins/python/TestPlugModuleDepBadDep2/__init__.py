@@ -6,8 +6,9 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug
+from plug_test import TestPlugBase3
 
-class TestPlugPythonDepBadDep2(Plug._TestPlugBase3):
+class TestPlugPythonDepBadDep2(TestPlugBase3):
     def GetTypeName(self):
         return 'TestPlugPythonDepBadDep2'
 

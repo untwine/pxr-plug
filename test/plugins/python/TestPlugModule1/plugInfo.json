@@ -4,10 +4,10 @@
             "Type": "python",
             "Name": "TestPlugModule1",
             "Info": {
-                "_TestPlugBaseBool": true,
+                "TestPlugBaseBool": true,
                 "Types": {
                     "TestPlugModule1.TestPlugPythonDerived1": {
-                        "bases": ["pxr::_TestPlugBase<1>"]
+                        "bases": ["pxr::TestPlugBase<1>"]
                     }
                 }
             }

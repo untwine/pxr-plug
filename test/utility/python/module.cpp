@@ -11,7 +11,5 @@ using namespace pxr;
 
 TF_WRAP_MODULE
 {
-    TF_WRAP( Notice );
-    TF_WRAP( Plugin );    
-    TF_WRAP( Registry );
+    TF_WRAP( TestPlugBase );
 }

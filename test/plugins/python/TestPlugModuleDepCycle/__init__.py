@@ -6,8 +6,9 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug
+from plug_test import TestPlugBase3
 
-class TestPlugPythonDepCycle(Plug._TestPlugBase3):
+class TestPlugPythonDepCycle(TestPlugBase3):
     def GetTypeName(self):
         return 'TestPlugPythonDepCycle'
 

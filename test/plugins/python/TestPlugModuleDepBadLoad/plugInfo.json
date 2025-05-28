@@ -9,7 +9,7 @@
                 },
                 "Types": {
                     "TestPlugPythonDepBadLoad": {
-                        "bases": ["pxr::_TestPlugBase<3>"]
+                        "bases": ["pxr::TestPlugBase<3>"]
                     }
                 }
             }

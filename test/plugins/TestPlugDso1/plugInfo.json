@@ -7,7 +7,7 @@
             "Info": {
                 "Types": {
                     "pxr::TestPlugDerived1": {
-                        "bases": ["pxr::_TestPlugBase<1>"]
+                        "bases": ["pxr::TestPlugBase<1>"]
                     }
                 }
             }

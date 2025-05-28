@@ -6,12 +6,12 @@
             "Info": {
                 "Types": {
                     "TestPlugModule3.TestPlugPythonDerived3_3": {
-                        "bases": ["pxr::_TestPlugBase<3>"],
+                        "bases": ["pxr::TestPlugBase<3>"],
                         # good alias
                         "alias": {"TfRefBase": "PluginDerived3_3"}
                     },
                     "TestPlugModule3.TestPlugPythonDerived3_4": {
-                        "bases": ["pxr::_TestPlugBase<4>"],
+                        "bases": ["pxr::TestPlugBase<4>"],
                         # bad alias
                         "alias": {"TfRefBase": 1}
                     }

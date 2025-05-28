@@ -6,7 +6,7 @@
 // Modified by Jeremy Retailleau.
 
 #include "./testPlugBase.h"
-#include "./registry.h"
+#include <pxr/plug/registry.h>
 #include <pxr/tf/diagnostic.h>
 #include <pxr/tf/type.h>
 #include <pxr/tf/stringUtils.h>
@@ -15,8 +15,8 @@
 namespace pxr {
 
 template <int N>
-TfRefPtr< _TestPlugBase<N> >
-_TestPlugBase<N>::Manufacture(const std::string & subclass)
+TfRefPtr< TestPlugBase<N> >
+TestPlugBase<N>::Manufacture(const std::string & subclass)
 {
     // Lookup TfType for subclass
     const TfType & t = PlugRegistry::FindTypeByName(subclass);
@@ -35,14 +35,14 @@ _TestPlugBase<N>::Manufacture(const std::string & subclass)
 }
 
 // XXX -- These shouldn't be in the library or used by the Python module.
-template class _TestPlugBase<1>;
-template class _TestPlugBase<2>;
-template class _TestPlugBase<3>;
-template class _TestPlugBase<4>;
+template class TestPlugBase<1>;
+template class TestPlugBase<2>;
+template class TestPlugBase<3>;
+template class TestPlugBase<4>;
 
 // This derived class should be discovered as an available subclass
-// of _TestPlugBase1 even though it is compiled into the base library.
-class _TestPlugDerived0 : public _TestPlugBase1 {
+// of TestPlugBase1 even though it is compiled into the base library.
+class _TestPlugDerived0 : public TestPlugBase1 {
   public:
     typedef _TestPlugDerived0 This;
     typedef TfRefPtr<This> RefPtr;
@@ -51,7 +51,7 @@ class _TestPlugDerived0 : public _TestPlugBase1 {
     virtual ~_TestPlugDerived0() {}
 
     // Return our base type, since this class is not wrapped for Python.
-    static TfRefPtr<_TestPlugBase1> New() {
+    static TfRefPtr<TestPlugBase1> New() {
         return TfCreateRefPtr(new This());
     }
 
@@ -61,16 +61,16 @@ class _TestPlugDerived0 : public _TestPlugBase1 {
 
 TF_REGISTRY_FUNCTION(pxr::TfType)
 {
-    TfType::Define< _TestPlugBase1 >()
-        .SetFactory<_TestPlugFactory<_TestPlugBase1> >();
-    TfType::Define< _TestPlugBase2 >()
-        .SetFactory<_TestPlugFactory<_TestPlugBase2> >();
-    TfType::Define< _TestPlugBase3 >()
-        .SetFactory<_TestPlugFactory<_TestPlugBase3> >();
-    TfType::Define< _TestPlugBase4 >()
-        .SetFactory<_TestPlugFactory<_TestPlugBase4> >();
+    TfType::Define< TestPlugBase1 >()
+        .SetFactory<_TestPlugFactory<TestPlugBase1> >();
+    TfType::Define< TestPlugBase2 >()
+        .SetFactory<_TestPlugFactory<TestPlugBase2> >();
+    TfType::Define< TestPlugBase3 >()
+        .SetFactory<_TestPlugFactory<TestPlugBase3> >();
+    TfType::Define< TestPlugBase4 >()
+        .SetFactory<_TestPlugFactory<TestPlugBase4> >();
 
-    TfType::Define< _TestPlugDerived0, TfType::Bases<_TestPlugBase1> >()
+    TfType::Define< _TestPlugDerived0, TfType::Bases<TestPlugBase1> >()
         .SetFactory<_TestPlugFactory<_TestPlugDerived0> >();
 }
 

@@ -6,11 +6,11 @@
             "Info": {
                 # This plugin specified a dependency on an unknown type.
                 "PluginDependencies": {
-                    "_TestPlugBase<2>": ["UnknownBase3Derived"]
+                    "TestPlugBase<2>": ["UnknownBase3Derived"]
                 },
                 "Types": {
                     "TestPlugPythonDepBadDep": {
-                        "bases": ["pxr::_TestPlugBase<3>"]
+                        "bases": ["pxr::TestPlugBase<3>"]
                     }
                 }
             }

@@ -5,11 +5,11 @@
 //
 // Modified by Jeremy Retailleau.
 
-#include <pxr/plug/testPlugBase.h>
+#include <plugTest/testPlugBase.h>
 
 namespace pxr {
 
-class TestPlugDerived1 : public _TestPlugBase1 {
+class TestPlugDerived1 : public TestPlugBase1 {
   public:
     typedef TestPlugDerived1 This;
     typedef TfRefPtr<This> RefPtr;
@@ -30,7 +30,7 @@ class TestPlugDerived1 : public _TestPlugBase1 {
 TF_REGISTRY_FUNCTION(pxr::TfType)
 {
     TfType::Define<TestPlugDerived1,
-                   TfType::Bases<_TestPlugBase1> >()
+                   TfType::Bases<TestPlugBase1> >()
         .SetFactory<_TestPlugFactory<TestPlugDerived1> >()
         ;
 }

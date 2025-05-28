@@ -6,7 +6,7 @@
             "Info": {
                 "Types": {
                     "TestPlugModule2.TestPlugPythonDerived2": {
-                        "bases": ["pxr::_TestPlugBase<2>"]
+                        "bases": ["pxr::TestPlugBase<2>"]
                     }
                 }
             }

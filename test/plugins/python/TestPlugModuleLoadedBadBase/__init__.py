@@ -6,8 +6,9 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug, Tf
+from plug_test import TestPlugBase1
 
-class TestPlugPythonLoadedBadBase(Plug._TestPlugBase1):
+class TestPlugPythonLoadedBadBase(TestPlugBase1):
     def GetTypeName(self):
         return 'TestPlugPythonLoadedBadbase'
 Tf.Type.Define(TestPlugPythonLoadedBadBase)

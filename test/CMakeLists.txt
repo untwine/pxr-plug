@@ -1,5 +1,6 @@
 # TODO: Separate C++ plugin tests so they can run independently of Python bindings.
 if(BUILD_PYTHON_BINDINGS)
+    add_subdirectory(utility)
     add_subdirectory(plugins)
 
     set(plugins_src "${CMAKE_CURRENT_SOURCE_DIR}/plugins")
@@ -9,13 +10,16 @@ if(BUILD_PYTHON_BINDINGS)
         TestPlug
         LIBRARY_PATH_PREPEND
             $<TARGET_FILE_DIR:plug>
+            $<TARGET_FILE_DIR:plugTest>
             $<TARGET_FILE_DIR:pyPlug>
+            $<TARGET_FILE_DIR:pyPlugTest>
             $<TARGET_FILE_DIR:pxr::gf>
             $<TARGET_FILE_DIR:pxr::pyGf>
             $<TARGET_FILE_DIR:pxr::tf>
             $<TARGET_FILE_DIR:pxr::pyTf>
         PYTHON_PATH_PREPEND
             "$<TARGET_FILE_DIR:pyPlug>/../.."
+            "$<TARGET_FILE_DIR:pyPlugTest>/.."
             "$<TARGET_FILE_DIR:pxr::pyGf>/../.."
             "$<TARGET_FILE_DIR:pxr::pyTf>/../.."
             "${plugins_src}/python"
@@ -27,6 +31,6 @@ if(BUILD_PYTHON_BINDINGS)
             "PLUGIN_DSO_INCOMPLETE_PATH=$<TARGET_FILE_DIR:TestPlugDsoIncomplete>"
             "PLUGIN_PYTHON_INCOMPLETE_PATH=${plugins_src}/python/TestPlugModuleIncomplete"
         EXTRA_ARGS "-v"
-        DEPENDS plug pyPlug
+        DEPENDS plug pyPlug plugTest pyPlugTest
     )
-endif ()
+endif()

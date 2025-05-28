@@ -6,8 +6,9 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug, Tf
+from plug_test import TestPlugBase2
 
-class TestPlugPythonDerived2(Plug._TestPlugBase2):
+class TestPlugPythonDerived2(TestPlugBase2):
     def GetTypeName(self):
         return 'TestPlugModule2.TestPlugPythonDerived2'
 

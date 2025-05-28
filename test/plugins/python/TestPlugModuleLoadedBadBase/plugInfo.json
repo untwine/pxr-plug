@@ -7,7 +7,7 @@
                 # This plugInfo specifies the wrong base
                 "Types": {
                     "TestPlugModuleLoadedBadBase.TestPlugPythonLoadedBadBase": {
-                        "bases": ["pxr::_TestPlugBase<4>"]
+                        "bases": ["pxr::TestPlugBase<4>"]
                     }
                 }
             }

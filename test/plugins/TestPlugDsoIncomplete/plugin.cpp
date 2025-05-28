@@ -5,13 +5,13 @@
 //
 // Modified by Jeremy Retailleau.
 
-#include <pxr/plug/testPlugBase.h>
+#include <plugTest/testPlugBase.h>
 
 namespace pxr {
 
 // This plugin is coded correctly, but will be incomplete
 // because it won't have a plugInfo.json
-class TestPlugIncomplete : public _TestPlugBase1 {
+class TestPlugIncomplete : public TestPlugBase1 {
   public:
     typedef TestPlugIncomplete This;
     typedef TfRefPtr<This> RefPtr;
@@ -32,7 +32,7 @@ class TestPlugIncomplete : public _TestPlugBase1 {
 TF_REGISTRY_FUNCTION(pxr::TfType)
 {
     TfType::Define<TestPlugIncomplete,
-                   TfType::Bases<_TestPlugBase1> >()
+                   TfType::Bases<TestPlugBase1> >()
         .SetFactory<_TestPlugFactory<TestPlugIncomplete> >()
         ;
 }

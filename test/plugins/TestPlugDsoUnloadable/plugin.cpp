@@ -5,7 +5,7 @@
 //
 // Modified by Jeremy Retailleau.
 
-#include <pxr/plug/testPlugBase.h>
+#include <plugTest/testPlugBase.h>
 #include <pxr/tf/tf.h>
 
 // This plugin depends on an undefined external function and so will be
@@ -21,7 +21,7 @@ namespace pxr {
 static int something =
     Unresolved_external_symbol_error_is_expected_Please_ignore();
 
-class TestPlugUnloadable : public _TestPlugBase1 {
+class TestPlugUnloadable : public TestPlugBase1 {
   public:
     typedef TestPlugUnloadable This;
     typedef TfRefPtr<This> RefPtr;
@@ -46,7 +46,7 @@ TF_REGISTRY_FUNCTION(pxr::TfType)
     TF_UNUSED(something);
 
     TfType::Define<TestPlugUnloadable,
-                   TfType::Bases<_TestPlugBase1> >()
+                   TfType::Bases<TestPlugBase1> >()
         .SetFactory<_TestPlugFactory<TestPlugUnloadable> >()
         ;
 }

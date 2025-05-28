@@ -6,7 +6,7 @@
             "Info": {
                 "Types": {
                     "TestPlugModuleLoaded.TestPlugPythonLoaded": {
-                        "bases": ["pxr::_TestPlugBase<1>"]
+                        "bases": ["pxr::TestPlugBase<1>"]
                     }
                 }
             }

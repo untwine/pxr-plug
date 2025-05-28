@@ -7,7 +7,6 @@ add_library(plug
     pxr/plug/plugin.cpp
     pxr/plug/registry.cpp
     pxr/plug/staticInterface.cpp
-    pxr/plug/testPlugBase.cpp
 )
 
 target_include_directories(plug

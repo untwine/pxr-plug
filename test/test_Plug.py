@@ -9,6 +9,7 @@ import sys, os
 import unittest
 
 from pxr import Plug, Tf, Gf
+import plug_test
 
 testPluginsDsoSearch = os.environ.get("PLUGINS_DSO_SEARCH")
 testPluginsPythonSearch = os.environ.get("PLUGINS_PYTHON_SEARCH")
@@ -86,7 +87,7 @@ class TestPlug(unittest.TestCase):
                         'TestPlugModuleUnloadable', 'TestPlugModuleUnicode']))
 
         # Check available subclasses of TestPlugBase<1>
-        base1Subclasses = Tf.Type.FindByName('pxr::_TestPlugBase<1>').GetAllDerivedTypes()
+        base1Subclasses = Tf.Type.FindByName('pxr::TestPlugBase<1>').GetAllDerivedTypes()
         base1SubclassesExpected = \
             ('pxr::_TestPlugDerived0', 'pxr::TestPlugDerived1',
             'TestPlugModule1.TestPlugPythonDerived1',
@@ -98,8 +99,8 @@ class TestPlug(unittest.TestCase):
             self.assertIn(sc, base1Subclasses)
         self.assertEqual(len(base1Subclasses), len(base1SubclassesExpected))
 
-        # Check available subclasses of _TestPlugBase<2>
-        base2Subclasses = Tf.Type.FindByName('pxr::_TestPlugBase<2>').GetAllDerivedTypes()
+        # Check available subclasses of TestPlugBase<2>
+        base2Subclasses = Tf.Type.FindByName('pxr::TestPlugBase<2>').GetAllDerivedTypes()
         base2SubclassesExpected = ('pxr::TestPlugDerived2',
                                    'TestPlugModule2.TestPlugPythonDerived2')
         for sc in base2SubclassesExpected:
@@ -110,9 +111,9 @@ class TestPlug(unittest.TestCase):
         self.assertTrue(len(allPlugins) >= 8)
 
     def test_ManufacturingCppDerivedClasses(self):
-        # Construct and verify an instance of _TestPlugBase<1>
-        tb1 = Plug._TestPlugBase1()
-        self.assertEqual(tb1.GetTypeName(), 'pxr::_TestPlugBase<1>')
+        # Construct and verify an instance of TestPlugBase<1>
+        tb1 = plug_test.TestPlugBase1()
+        self.assertEqual(tb1.GetTypeName(), 'pxr::TestPlugBase<1>')
 
         # Get the plugin for TestPlugDerived1
         pd1 = Plug.Registry().GetPluginForType('pxr::TestPlugDerived1')
@@ -120,14 +121,14 @@ class TestPlug(unittest.TestCase):
         self.assertFalse(pd1.isLoaded)
 
         # Manufacture and verify an instance of TestPlugDerived1
-        td1 = Plug._TestPlugBase1('pxr::TestPlugDerived1')
+        td1 = plug_test.TestPlugBase1('pxr::TestPlugDerived1')
         self.assertTrue(td1 and not td1.expired)
         self.assertEqual(td1.GetTypeName(), 'TestPlugDerived1')
         self.assertTrue(pd1.isLoaded)
 
-        # Construct and verify an instance of _TestPlugBase<2>
-        tb2 = Plug._TestPlugBase2()
-        self.assertEqual(tb2.GetTypeName(), 'pxr::_TestPlugBase<2>')
+        # Construct and verify an instance of TestPlugBase<2>
+        tb2 = plug_test.TestPlugBase2()
+        self.assertEqual(tb2.GetTypeName(), 'pxr::TestPlugBase<2>')
 
         # Get the plugin for TestPlugDerived2
         pd2 = Plug.Registry().GetPluginForType('pxr::TestPlugDerived2')
@@ -135,14 +136,14 @@ class TestPlug(unittest.TestCase):
         self.assertFalse(pd2.isLoaded)
 
         # Manufacture and verify an instance of TestPlugDerived2
-        td2 = Plug._TestPlugBase2('pxr::TestPlugDerived2')
+        td2 = plug_test.TestPlugBase2('pxr::TestPlugDerived2')
         self.assertTrue(td2 and not td2.expired)
         self.assertEqual(td2.GetTypeName(), 'TestPlugDerived2')
         self.assertTrue(pd2.isLoaded)
 
         # Check that plugin correctly reports its declared types.
-        self.assertFalse(pd1.DeclaresType(Tf.Type('pxr::_TestPlugBase<1>'), includeSubclasses=False))
-        self.assertTrue(pd1.DeclaresType(Tf.Type('pxr::_TestPlugBase<1>'), includeSubclasses=True))
+        self.assertFalse(pd1.DeclaresType(Tf.Type('pxr::TestPlugBase<1>'), includeSubclasses=False))
+        self.assertTrue(pd1.DeclaresType(Tf.Type('pxr::TestPlugBase<1>'), includeSubclasses=True))
         self.assertTrue(pd1.DeclaresType(Tf.Type('pxr::TestPlugDerived1'), includeSubclasses=False))
         self.assertTrue(pd1.DeclaresType(Tf.Type('pxr::TestPlugDerived1'), includeSubclasses=True))
 
@@ -175,9 +176,9 @@ class TestPlug(unittest.TestCase):
         ppd2.Load()
 
         # Check that plugin correctly reports its declared types.
-        self.assertFalse(ppd1.DeclaresType(Tf.Type('pxr::_TestPlugBase<1>'),
+        self.assertFalse(ppd1.DeclaresType(Tf.Type('pxr::TestPlugBase<1>'),
                                     includeSubclasses=False))
-        self.assertTrue(ppd1.DeclaresType(Tf.Type('pxr::_TestPlugBase<1>'),
+        self.assertTrue(ppd1.DeclaresType(Tf.Type('pxr::TestPlugBase<1>'),
                                 includeSubclasses=True))
         self.assertTrue(ppd1.DeclaresType(Tf.Type('TestPlugModule1.TestPlugPythonDerived1'), 
                                 includeSubclasses=False))
@@ -203,7 +204,7 @@ class TestPlug(unittest.TestCase):
         self.assertTrue(ppd3.isLoaded)
 
     def test_MetadataAccess(self):
-        base1Subclasses = Tf.Type.FindByName('pxr::_TestPlugBase<1>').derivedTypes
+        base1Subclasses = Tf.Type.FindByName('pxr::TestPlugBase<1>').derivedTypes
         self.assertIn('pxr::TestPlugUnloadable', base1Subclasses)
         plugin = Plug.Registry().GetPluginForType('pxr::TestPlugUnloadable')
         self.assertIsNotNone(plugin)
@@ -218,7 +219,7 @@ class TestPlug(unittest.TestCase):
             plugin.GetMetadataForType(Tf.Type.FindByName('pxr::TestPlugUnloadable')))
 
         self.assertTrue('bases' in md)
-        self.assertTrue(md['bases'] == ['pxr::_TestPlugBase<1>'])
+        self.assertTrue(md['bases'] == ['pxr::TestPlugBase<1>'])
         self.assertTrue('description' in md)
         self.assertTrue(md['description'] == 'unloadable plugin')
         self.assertTrue('notLoadable' in md)
@@ -329,7 +330,7 @@ class TestPlug(unittest.TestCase):
 
     def test_StlSequencesForPlugPluginPtr(self):
         pd1 = Plug.Registry().GetPluginForType('pxr::TestPlugDerived1')
-        td1 = Plug._TestPlugBase1('pxr::TestPlugDerived1')
+        td1 = plug_test.TestPlugBase1('pxr::TestPlugDerived1')
         self.assertTrue(td1.TestAcceptPluginSequence([pd1]))
 
 if __name__ == '__main__':

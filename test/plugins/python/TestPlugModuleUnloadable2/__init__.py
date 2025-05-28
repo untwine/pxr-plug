@@ -6,8 +6,9 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug
+from plug_test import TestPlugBase1
 
-class TestPlugPythonUnloadable2(Plug._TestPlugBase1):
+class TestPlugPythonUnloadable2(TestPlugBase1):
     def GetTypeName(self):
         return 'TestPlugPythonUnloadable2'
 

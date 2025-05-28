@@ -3,7 +3,6 @@ add_library(pyPlug SHARED
     wrapNotice.cpp
     wrapPlugin.cpp
     wrapRegistry.cpp
-    wrapTestPlugBase.cpp
 )
 
 set_target_properties(pyPlug

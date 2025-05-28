@@ -7,11 +7,11 @@
                 # This plugInfo specifies a dependency for a type which
                 # is not registered as a plugin
                 "PluginDependencies": {
-                    "_TestPlugBase<3>": ["pxr::_TestPlugBase<1>"]
+                    "TestPlugBase<3>": ["pxr::TestPlugBase<1>"]
                 },
                 "Types": {
                     "TestPlugPythonDepBadDep2": {
-                        "bases": ["pxr::_TestPlugBase<3>"]
+                        "bases": ["pxr::TestPlugBase<3>"]
                     }
                 }
             }

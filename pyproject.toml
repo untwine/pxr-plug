@@ -48,6 +48,9 @@ cmake.args = [
     "-DCMAKE_INSTALL_INCLUDEDIR=pxr-plug/include",
     "-DCMAKE_INSTALL_DATAROOTDIR=pxr-plug",
     "-DCMAKE_INSTALL_PYTHON_LIBDIR=.",
+
+    # macOS 10.13+ is required for aligned deallocation used by oneAPI TBB
+    "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.13"
 ]
 wheel.exclude = ["pxr-plug"]
 sdist.exclude = ["test", ".github"]

@@ -6,10 +6,11 @@
 # Modified by Jeremy Retailleau.
 
 from pxr import Plug
+from plug_test import TestPlugBase1
 
 # This plugin is coded correctly, but will have a pluginfo.json in a
 # unicode path
-class TestPlugPythonUnicode(Plug._TestPlugBase1):
+class TestPlugPythonUnicode(TestPlugBase1):
     def GetTypeName(self):
         return 'TestPlugPythonUnicode'
 

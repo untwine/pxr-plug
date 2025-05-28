@@ -5,11 +5,11 @@
             "Name": "TestPlugModuleDepCycle",
             "Info": {
                 "PluginDependencies": {
-                    "_TestPlugBase<3>": ["TestPlugPythonDepCycle"]
+                    "TestPlugBase<3>": ["TestPlugPythonDepCycle"]
                 },
                 "Types": {
                     "TestPlugPythonDepCycle": {
-                        "bases": ["pxr::_TestPlugBase<3>"]
+                        "bases": ["pxr::TestPlugBase<3>"]
                     }
                 }
             }

@@ -8,26 +8,26 @@
 #ifndef PXR_PLUG_TEST_PLUG_BASE_H
 #define PXR_PLUG_TEST_PLUG_BASE_H
 
-#include "./api.h"
+#include <pxr/plug/api.h>
 #include <pxr/tf/refBase.h>
 #include <pxr/tf/stringUtils.h>
 #include <pxr/tf/type.h>
 #include <pxr/tf/weakBase.h>
-#include "./plugin.h"
+#include <pxr/plug/plugin.h>
 
 #include <string>
 
 namespace pxr {
 
 template <int M>
-class _TestPlugBase : public TfRefBase, public TfWeakBase {
+class TestPlugBase : public TfRefBase, public TfWeakBase {
   public:
-    typedef _TestPlugBase This;
+    typedef TestPlugBase This;
     typedef TfRefPtr<This> RefPtr;
     typedef TfWeakPtr<This> Ptr;
     constexpr static int N = M;
 
-    virtual ~_TestPlugBase() {}
+    virtual ~TestPlugBase() {}
 
     virtual std::string GetTypeName() {
         return TfType::Find(this).GetTypeName();
@@ -45,28 +45,28 @@ class _TestPlugBase : public TfRefBase, public TfWeakBase {
     static RefPtr Manufacture(const std::string & subclass);
 
   protected:
-    _TestPlugBase() {}
+    TestPlugBase() {}
 };
 
 template <int N>
 class _TestPlugFactoryBase : public TfType::FactoryBase {
 public:
-    virtual TfRefPtr<_TestPlugBase<N> > New() const = 0;
+    virtual TfRefPtr<TestPlugBase<N> > New() const = 0;
 };
 
 template <typename T>
 class _TestPlugFactory : public _TestPlugFactoryBase<T::N> {
 public:
-    virtual TfRefPtr<_TestPlugBase<T::N> > New() const
+    virtual TfRefPtr<TestPlugBase<T::N> > New() const
     {
         return T::New();
     }
 };
 
-typedef _TestPlugBase<1> _TestPlugBase1;
-typedef _TestPlugBase<2> _TestPlugBase2;
-typedef _TestPlugBase<3> _TestPlugBase3;
-typedef _TestPlugBase<4> _TestPlugBase4;
+typedef TestPlugBase<1> TestPlugBase1;
+typedef TestPlugBase<2> TestPlugBase2;
+typedef TestPlugBase<3> TestPlugBase3;
+typedef TestPlugBase<4> TestPlugBase4;
 
 }  // namespace pxr
 
