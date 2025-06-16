@@ -22,11 +22,12 @@ PLUG_NAMESPACE_OPEN_SCOPE
 namespace {
 
 const char* pathEnvVarName      = TF_PP_STRINGIZE(PXR_PLUGINPATH_NAME);
-const char* buildLocation       = TF_PP_STRINGIZE(PXR_BUILD_LOCATION);
-const char* pluginBuildLocation = TF_PP_STRINGIZE(PXR_PLUGIN_BUILD_LOCATION);
 
 #ifdef PXR_INSTALL_LOCATION
-const char* installLocation     = TF_PP_STRINGIZE(PXR_INSTALL_LOCATION); 
+const char* installLocation     = PXR_INSTALL_LOCATION;
+#else
+const char* buildLocation       = PXR_BUILD_LOCATION;
+const char* pluginBuildLocation = PXR_PLUGIN_BUILD_LOCATION;
 #endif // PXR_INSTALL_LOCATION
 
 void
@@ -101,16 +102,11 @@ ARCH_CONSTRUCTOR(Plug_InitConfig, 2)
     _AppendPathList(&result, TfGetenv(pathEnvVarName), binaryPath);
 
     // Fallback locations.
-    _AppendPathList(&result, buildLocation, binaryPath);
-    _AppendPathList(&result, pluginBuildLocation, binaryPath);
-
-#ifdef PXR_APPLE_FRAMEWORK_RELATIVE_RESOURCES
-    std::string relativeResourcePath = std::string(PXR_APPLE_FRAMEWORK_RELATIVE_RESOURCES) + "/usd";
-    _AppendPathList(&result, relativeResourcePath, binaryPath);
-#endif
-
 #ifdef PXR_INSTALL_LOCATION
     _AppendPathList(&result, installLocation, binaryPath);
+#else
+    _AppendPathList(&result, buildLocation, binaryPath);
+    _AppendPathList(&result, pluginBuildLocation, binaryPath);
 #endif // PXR_INSTALL_LOCATION
 
     // Plugin registration must process these paths in order
