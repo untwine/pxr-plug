@@ -58,14 +58,14 @@ target_compile_definitions(plug
         MFB_PACKAGE_MODULE=Plug
         MFB_PACKAGE_NAME=plug
         MFB_ALT_PACKAGE_NAME=plug
-        PXR_BUILD_LOCATION=usd
-        PXR_PLUGIN_BUILD_LOCATION=../plugin/usd
+        PXR_BUILD_LOCATION="usd/*/resources/"
+        PXR_PLUGIN_BUILD_LOCATION="../plugin/usd/*/resource/"
 )
 
 if (SKBUILD)
     target_compile_definitions(plug
         PRIVATE
-            PXR_INSTALL_LOCATION=../pluginfo
+            PXR_INSTALL_LOCATION="../../pxr/pluginfo/*/resources/"
     )
 endif()
 

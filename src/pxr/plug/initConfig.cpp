@@ -21,11 +21,12 @@ namespace pxr {
 namespace {
 
 const char* pathEnvVarName      = TF_PP_STRINGIZE(PXR_PLUGINPATH_NAME);
-const char* buildLocation       = TF_PP_STRINGIZE(PXR_BUILD_LOCATION);
-const char* pluginBuildLocation = TF_PP_STRINGIZE(PXR_PLUGIN_BUILD_LOCATION);
 
 #ifdef PXR_INSTALL_LOCATION
-const char* installLocation     = TF_PP_STRINGIZE(PXR_INSTALL_LOCATION); 
+const char* installLocation     = PXR_INSTALL_LOCATION;
+#else
+const char* buildLocation       = PXR_BUILD_LOCATION;
+const char* pluginBuildLocation = PXR_PLUGIN_BUILD_LOCATION;
 #endif // PXR_INSTALL_LOCATION
 
 void
@@ -41,7 +42,13 @@ _AppendPathList(
         // Anchor all relative paths to the shared library path.
         const bool isLibraryRelativePath = TfIsRelativePath(path);
         if (isLibraryRelativePath) {
-            result->push_back(TfStringCatPaths(sharedLibPath, path));
+            std::string fullPath = TfStringCatPaths(sharedLibPath, path);
+            // Re-add trailing slash if necessary
+            // (https://github.com/PixarAnimationStudios/OpenUSD/issues/3679)
+            if (TfStringEndsWith(path, "/") && !TfStringEndsWith(fullPath, "/")) {
+                fullPath += "/";
+            }
+            result->push_back(fullPath);
         }
         else {
             result->push_back(path);
@@ -89,11 +96,11 @@ ARCH_CONSTRUCTOR(Plug_InitConfig, 2, void)
     _AppendPathList(&result, TfGetenv(pathEnvVarName), binaryPath);
 
     // Fallback locations.
-    _AppendPathList(&result, buildLocation, binaryPath);
-    _AppendPathList(&result, pluginBuildLocation, binaryPath);
-
 #ifdef PXR_INSTALL_LOCATION
     _AppendPathList(&result, installLocation, binaryPath);
+#else
+    _AppendPathList(&result, buildLocation, binaryPath);
+    _AppendPathList(&result, pluginBuildLocation, binaryPath);
 #endif // PXR_INSTALL_LOCATION
 
     // Plugin registration must process these paths in order
